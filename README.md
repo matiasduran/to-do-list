@@ -1,13 +1,15 @@
-# TO-DO
-- users support
-+ ADD CSS STYLE
-- add tasks per project support
-+ add priority order visualization
-+ add backlog, background backlog and WIP
-+ delete all archived tasks
-- add duration of tasks
-<!-- https://tutorial.djangogirls.org/es/django_forms/ -->
+# Just a simple TO-DO list made with Django
+## Features
+- [X] Add/Archive tasks.
+- [X] Backlog management.
+- [X] Priority management.
+- [X] Every user has her own task list.
+- [X] Time per task.
+- [ ] Project management per user.
+- [ ] Pomodoro timer.
+- [ ] Notes support.
 
-# SOURCES
+# Interesting links
 ## User's app:
 - https://realpython.com/django-user-management/
+- https://tutorial.djangogirls.org/es/django_forms/
