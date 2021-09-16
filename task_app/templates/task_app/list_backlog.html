@@ -1,0 +1,41 @@
+{% extends "task_app/base.html" %}
+{% block content %}
+    {% for task in task_list_backlog %}
+    <p class="lead">
+        [-] {{ task.id }}. <a class="text-white text-decoration-none"
+            href="{% url "task_app:send_backlog_task" task.id %}">{{task}}</a>
+    </p> 
+    {% endfor %}
+
+    ---
+
+    {% for task in task_list_bottom_backlog %}
+    <p class="lead">
+        [ ] {{ task.id }}. <a class="text-white text-decoration-none"
+            href="{% url "task_app:send_backlog_task" task.id %}">{{task}}</a>
+    </p> 
+    {% endfor %}
+
+    {% if task_list_bottom_backlog.has_other_pages %}
+    <ul class="pagination justify-content-center">
+        {% if task_list_bottom_backlog.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ task_list_bottom_backlog.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+        {% endif %}
+        {% for i in task_list_bottom_backlog.paginator.page_range %}
+            {% if task_list_bottom_backlog.number == i %}
+                <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if task_list_bottom_backlog.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ task_list_bottom_backlog.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">Next</a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+{% endblock %}

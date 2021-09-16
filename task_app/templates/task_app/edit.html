@@ -1,0 +1,12 @@
+{% extends "task_app/base.html" %}
+{% block title %}Edit tasks{% endblock %}
+{% block content %}
+
+        <h2>Edit task: {{task}}</h2>
+        <form method="post">
+        {{ task_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Edit task"></p>
+        </form>
+
+{% endblock %}

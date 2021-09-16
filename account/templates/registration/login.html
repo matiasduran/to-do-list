@@ -1,0 +1,21 @@
+{% extends "account/base.html" %}
+{% block content %}
+<form method="post">
+<div class="row g-3">
+    <div class="col-12">
+        {{ form.username }}
+        {% csrf_token %}
+    </div>
+    <div class="col-12">
+        {{ form.password }}
+    </div>
+    <div class="col-12">
+        <button class="btn btn-outline-secondary" type="submit" id="description_data">Login</button>
+    </div>
+</div>
+</form>
+
+<!-- <a class="text-white" href="{% url 'task_app:index' %}">Back to dashboard</a> -->
+<!-- <a class="text-white" href="{% url 'account:password_reset' %}">Reset password</a> -->
+
+{% endblock %}

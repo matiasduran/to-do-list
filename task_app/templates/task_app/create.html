@@ -1,0 +1,18 @@
+{% extends "task_app/base.html" %}
+{% block title %}Adding tasks{% endblock %}
+{% block content %}
+
+    {% if new_task %}
+        <h2>Your task has been added.</h2>
+    {% else %}
+        <form method="post">
+        <div class="input-group mb-3">
+        {{ task_form }} {% comment %} task_form.as_p {% endcomment%}
+        {% csrf_token %}
+        <!--<p><input type="submit" value="Add task"></p> -->
+        <button class="btn btn-outline-secondary" type="submit" id="description_data">Add Task</button>
+        </div>
+        </form>
+    {% endif %}
+
+{% endblock %}
