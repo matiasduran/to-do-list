@@ -15,3 +15,6 @@ tests/report/
 
 # ignore dev BD
 *.sqlite3
+
+# ignore venv folder
+venv
