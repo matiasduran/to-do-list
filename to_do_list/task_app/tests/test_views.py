@@ -33,7 +33,7 @@ Features:
 
 """
 
-class ArchiveAllTasksViewTest(TestCase):
+class ShowAllArchivedViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
