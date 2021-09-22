@@ -3,6 +3,7 @@ from django.urls import reverse
 from task_app.models import Task, User
 from django.shortcuts import get_object_or_404
 import datetime
+import json
 
 """
 List of Views:
@@ -15,22 +16,7 @@ List of Views:
 + send_backlog_task
 + show_all_archived
 - show_bottom_backlog
-
-Features:
-- index
-    - show list of tasks WIP, backlog and done.
-- create_task
-    - create a new task, only for the user.
-- edit_status_task
-    - edit status of the tasks.
-- archive_all_tasks
-    - it changes all backlog tasks to archived.
-- delete_archived_tasks
-    - it deleted all archived tasks.
-- send_backlog_task
-- show_all_archived
-- show_bottom_backlog
-
++ download_backup
 """
 
 class ShowAllArchivedViewTest(TestCase):
@@ -327,9 +313,6 @@ class ArchiveAllTasksViewTest(TestCase):
         user = User.objects.filter(username=USER)[0]
         login = self.client.force_login(user)
         resp = self.client.get(reverse('task_app:index'))
-
-        # get a task of this user
-        id_task = Task.objects.filter(author=user)[0].id
         
         # check if it redirects right
         resp = self.client.get(reverse('task_app:archive_all_tasks'))
@@ -388,6 +371,106 @@ class ArchiveAllTasksViewTest(TestCase):
             self.assertEqual(task.status, old_task_status)
             task = get_object_or_404(Task, id=task.id)
             self.assertEqual(task.status, old_task_status)
+
+class DownloadBackupViewTest(TestCase):
+
+    """
+    - test if can download logged
+    - test if can download without loggin
+    - test if downloaded file is ok
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        #Create users
+        number_of_users = 2
+        for user_num in range(number_of_users):
+            user = User.objects.create_user(
+                username=f'Matias {user_num}',
+                password='123456'
+            )
+
+            # create 10 tasks in backlog per user
+            number_of_tasks = 10
+            for task_num in range(number_of_tasks):
+                Task.objects.create(
+                    description=f'This is a little task \# {task_num}',
+                    priority='1',
+                    status='b',
+                    author=user,
+                    # last_working_time=,
+                    spent_time=datetime.timedelta(seconds=15),
+                )
+
+            # create 8 archived tasks per user
+            number_of_tasks = 8
+            for task_num in range(number_of_tasks):
+                Task.objects.create(
+                    description=f'This is a little archived task \# {task_num} by {user_num}',
+                    priority='1',
+                    status='a',
+                    author=user,
+                    # last_working_time=,
+                    spent_time=datetime.timedelta(seconds=15),
+                )
+
+            # create 5 bottom backlog tasks per user
+            number_of_tasks = 5
+            for task_num in range(number_of_tasks):
+                Task.objects.create(
+                    description=f'This is a little archived task \# {task_num} by {user_num}',
+                    priority='1',
+                    status='bb',
+                    author=user,
+                    # last_working_time=,
+                    spent_time=datetime.timedelta(seconds=15),
+                )
+
+            # create 5 done tasks per user
+            number_of_tasks = 5
+            for task_num in range(number_of_tasks):
+                Task.objects.create(
+                    description=f'This is a little archived task \# {task_num} by {user_num}',
+                    priority='2',
+                    status='d',
+                    author=user,
+                    # last_working_time=,
+                    spent_time=datetime.timedelta(seconds=15),
+                )
+
+    def test_redirect_if_not_logged_in_with_template(self):
+        resp = self.client.get(reverse('task_app:download_backup'))
+        self.assertRedirects(resp, '/accounts/login/?next=/task/download_backup/')
+
+    def test_redirect_if_not_logged_in_with_url(self):
+        RIGHT_URL = f'/task/download_backup/'
+        resp = self.client.get(RIGHT_URL)
+        self.assertRedirects(resp, f'/accounts/login/?next={RIGHT_URL}')
+
+    def test_logged_in_download_file(self):
+
+        USER = 'Matias 1'
+
+        # Login user
+        user = User.objects.filter(username=USER)[0]
+        login = self.client.force_login(user)
+        resp = self.client.get(reverse('task_app:index'))
+        
+        # check if it redirects right
+        resp = self.client.get(reverse('task_app:download_backup'))
+        self.assertEqual(resp.status_code, 200)
+        
+        downloaded_task_list = json.loads(resp.content)
+        stored_task_list = Task.objects.filter(author=user)
+
+        # check if list has all tasks
+        self.assertEqual(len(downloaded_task_list), len(stored_task_list))
+
+        # check if every record of the list has all keys
+        self.assertTrue('description' in downloaded_task_list[0].keys())
+        self.assertTrue('priority' in downloaded_task_list[0].keys())
+        self.assertTrue('status' in downloaded_task_list[0].keys())
+        self.assertTrue('spent_time' in downloaded_task_list[0].keys())
 
     """
 
