@@ -5,7 +5,9 @@ from .forms import TaskForm, StatusTaskForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.core import serializers
 import datetime
+import json
 
 @login_required
 def index(request):
@@ -196,3 +198,36 @@ def show_bottom_backlog(request):
         'task_list_bottom_backlog': bottom_backlog_tasks,
     }
     return render(request, 'task_app/list_backlog.html', context)
+
+@login_required
+def download_backup(request):
+    task_list = Task.objects.filter(author=request.user)
+
+    field_list = (
+        'description',
+        'priority',
+        'status',
+        #'author',
+        #'last_working_time',
+        'spent_time',
+    )
+
+    # convert model to text with list of dicts
+    task_list_json = serializers.serialize('json', task_list, fields=field_list)
+
+    # extract just fields of dict
+    task_list_json = [task['fields'] for task in json.loads(task_list_json)]
+
+    response = HttpResponse(
+        json.dumps(task_list_json),
+        content_type='application/json'
+    )
+    response['Content-Disposition'] = 'attachment;'\
+        'filename="task_list_{user}_{date_year}{date_month:02d}{date_day:02d}.json"'.format(
+        user=request.user,
+        date_year=timezone.now().year,
+        date_month=timezone.now().month,
+        date_day=timezone.now().day
+    )
+
+    return response
