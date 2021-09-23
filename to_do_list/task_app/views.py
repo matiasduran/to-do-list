@@ -231,3 +231,49 @@ def download_backup(request):
     )
 
     return response
+
+def import_tasks(request):
+    # source code based in: https://pythoncircle.com/post/30/how-to-upload-and-process-the-csv-file-in-django/
+
+    if request.method == 'POST':
+        batch_file = request.FILES["batch_file"]
+
+        if not batch_file.name.endswith('.json'):
+            return HttpResponse('Internal Server Error', status=500)
+            # messages.error(request,'File is not JSON type')
+            # return redirect("task_app:import_tasks")
+        #if file is too large, return
+        if batch_file.multiple_chunks():
+            return HttpResponse('Internal Server Error', status=500)
+            # messages.error(request,"Uploaded file is too big (%.2f MB)." % (batch_file.size/(1000*1000),))
+            # return redirect("task_app:import_tasks")
+
+        file_data = batch_file.read().decode("utf-8")
+        file_data_list = json.loads(file_data)
+
+        for task in file_data_list:
+            try:
+                new_task = Task.objects.create(
+                    description=task['description'],
+                    priority=task['priority'],
+                    status=task['status'],
+                )
+                new_task.spent_time = datetime.timedelta(
+                    hours=int(task['spent_time'].split(':')[0]),
+                    minutes=int(task['spent_time'].split(':')[1]),
+                )
+
+                new_task.author = request.user
+                new_task.last_working_time = timezone.now()
+                
+                new_task.save()
+            except:
+                return HttpResponse('Internal Server Error', status=500)
+
+        context = {'success': True}
+        return render(request, "task_app/import_tasks.html", context)
+
+    elif "GET" == request.method:
+        return render(request, "task_app/import_tasks.html")
+
+    return redirect("task_app:import_tasks")
