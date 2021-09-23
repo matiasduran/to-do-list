@@ -43,3 +43,15 @@ class Task(models.Model):
     """
     def __str__(self):
         return self.description
+
+# Create your models here.
+class Tag(models.Model):
+
+    name = models.CharField(max_length=300)
+    task = models.ManyToManyField(
+        Task,
+        related_name='tag_task',
+        blank=True)
+
+    def __str__(self):
+        return self.name
