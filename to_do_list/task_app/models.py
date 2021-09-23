@@ -44,7 +44,6 @@ class Task(models.Model):
     def __str__(self):
         return self.description
 
-# Create your models here.
 class Tag(models.Model):
 
     name = models.CharField(max_length=300)
