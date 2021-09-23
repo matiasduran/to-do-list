@@ -46,11 +46,18 @@ class Task(models.Model):
 
 class Tag(models.Model):
 
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, unique=True)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     task = models.ManyToManyField(
         Task,
         related_name='tag_task',
-        blank=True)
+        blank=False
+    )
 
     def __str__(self):
         return self.name
