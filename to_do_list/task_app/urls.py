@@ -14,4 +14,5 @@ urlpatterns = [
     path('show_bottom_backlog/', views.show_bottom_backlog, name='show_bottom_backlog'),
     path('task/delete_archived_tasks/', views.delete_archived_tasks, name='delete_archived_tasks'),
     path('task/download_backup/', views.download_backup, name='download_backup'),
+    path('create_tag/', views.create_tag, name='create_tag'),
 ]
