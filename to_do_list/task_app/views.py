@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Task
-from .forms import TaskForm, StatusTaskForm
+from .models import Task, Tag
+from .forms import TaskForm, StatusTaskForm, TagForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils import timezone
@@ -106,6 +106,15 @@ def create_task(request):
             # Save the task to the database
             new_task.status = 'b'
             new_task.author = request.user
+            
+            # look for default tag
+            # if not Tag.objects.filter(name='all').exists():
+            # author, created = Author.objects.get_or_create(name='Leo Tolstoy', defaults={'books_in_store': 0, 'store': 'Amazon'})
+            # tag.task.add(t)
+            # tag.save()
+            # tag.save()
+            # tag.task.all()
+
             new_task.save()
             return redirect('task_app:index')
     else:
@@ -231,3 +240,35 @@ def download_backup(request):
     )
 
     return response
+
+@login_required
+def create_tag(request):
+
+    new_tag = None
+
+    if request.method == 'POST':
+        tag_form = TagForm(data=request.POST)
+        if tag_form.is_valid():
+            # Create tag object but don't save to database yet
+            new_tag = tag_form.save(commit=False)
+            # Save the tag to the database
+            new_tag.author = request.user
+            new_tag.save()
+            return redirect('task_app:index')
+    else:
+        tag_form = TagForm()
+
+    context = {
+        'new_tag': new_tag,
+        'tag_form': tag_form
+    }
+
+    return render(
+        request,
+        'task_app/create_tag.html',
+        context
+    )
+
+# remove tag
+# edit (or add) tag
+# add tag when create
