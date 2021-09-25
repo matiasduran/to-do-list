@@ -107,13 +107,16 @@ def create_task(request):
             new_task.status = 'b'
             new_task.author = request.user
             
-            # look for default tag
-            # if not Tag.objects.filter(name='all').exists():
-            # author, created = Author.objects.get_or_create(name='Leo Tolstoy', defaults={'books_in_store': 0, 'store': 'Amazon'})
-            # tag.task.add(t)
-            # tag.save()
-            # tag.save()
-            # tag.task.all()
+            tag_id = request.POST.get('tag')
+            print(tag_id)
+
+            new_task.save()
+            if Tag.objects.filter(pk=tag_id).exists():
+                tag = get_object_or_404(Tag, pk=tag_id)
+            else:
+                tag = Tag.objects.get_or_create(name='all')
+            
+            new_task.tag.add(tag)
 
             new_task.save()
             return redirect('task_app:index')
