@@ -11,29 +11,41 @@ import json
 
 @login_required
 def index(request):
-    # latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    # context = {'latest_question_list': latest_question_list}
-    # task_list = Task.objects.order_by('id')
+    tag_id = request.GET.get('tag')
+    
+    if tag_id is None:
+        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+        tag_id = tag.pk
+
+    tag_id = int(tag_id)
+    
     # exclude archived tasks
     task_list = Task.objects\
         .filter(author=request.user)\
+        .filter(tag=tag_id)\
         .exclude(status="a")\
         .exclude(status="b")\
         .order_by('priority')
 
     task_list_backlog = Task.objects\
         .filter(author=request.user)\
+        .filter(tag=tag_id)\
         .filter(status='b')\
         .order_by('priority')
 
     task_form = TaskForm(initial={'priority': '2'})
 
+    tag_list = Tag.objects.filter(author=request.user)
+
     context = {
         'task_list': task_list,
         'task_list_backlog': task_list_backlog,
         'task_form': task_form,
+        'tag_list': tag_list,
+        'selected_tag': tag_id
     }
     return render(request, 'task_app/index.html', context)
+
 """
 @login_required
 def create_task(request):
