@@ -3,6 +3,20 @@ from django.contrib.auth.models import User
 from datetime import timedelta
 
 # Create your models here.
+
+class Tag(models.Model):
+
+    name = models.CharField(max_length=300, unique=True)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return self.name
+
 class Task(models.Model):
     PRIORITIES = (
         ('1', 'High'),
@@ -32,6 +46,12 @@ class Task(models.Model):
         default = timedelta(days=0)
     )
 
+    tag = models.ManyToManyField(
+        Tag,
+        related_name='task_tag',
+        blank=False
+    )
+
     """
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -43,21 +63,3 @@ class Task(models.Model):
     """
     def __str__(self):
         return self.description
-
-class Tag(models.Model):
-
-    name = models.CharField(max_length=300, unique=True)
-    author = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    task = models.ManyToManyField(
-        Task,
-        related_name='tag_task',
-        blank=False
-    )
-
-    def __str__(self):
-        return self.name
