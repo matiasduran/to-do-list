@@ -120,13 +120,12 @@ def create_task(request):
             new_task.author = request.user
             
             tag_id = request.POST.get('tag')
-            print(tag_id)
 
             new_task.save()
             if Tag.objects.filter(pk=tag_id).exists():
                 tag = get_object_or_404(Tag, pk=tag_id)
             else:
-                tag = Tag.objects.get_or_create(name='all')
+                tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
             
             new_task.tag.add(tag)
 
@@ -139,7 +138,8 @@ def create_task(request):
         #'post': post,
         #'comments': comments,
         'new_task': new_task,
-        'task_form': task_form
+        'task_form': task_form,
+        'selected_tag': tag_id
     }
 
     return render(
