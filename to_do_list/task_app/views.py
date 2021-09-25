@@ -122,12 +122,12 @@ def create_task(request):
             tag_id = request.POST.get('tag')
 
             new_task.save()
+            tag_all = Tag.objects.get_or_create(name='all', author=request.user)[0]
             if Tag.objects.filter(pk=tag_id).exists():
-                tag = get_object_or_404(Tag, pk=tag_id)
+                tag = (get_object_or_404(Tag, pk=tag_id))
+                new_task.tag.add(tag, tag_all)
             else:
-                tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
-            
-            new_task.tag.add(tag)
+                new_task.tag.add(tag_all)
 
             new_task.save()
             return redirect('task_app:index')
@@ -286,4 +286,3 @@ def create_tag(request):
 
 # remove tag
 # edit (or add) tag
-# add tag when create
