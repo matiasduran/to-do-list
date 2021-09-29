@@ -1,0 +1,69 @@
+{% extends "task_app/base.html" %}
+{% block content %}
+    <form action="{% url "task_app:show_all_archived" %}" method="get">
+        <div class="input-group mb-3">
+            <select name="tag" type="dropdown-menu" class="form-control" aria-label="" value="{{selected_tag}}" id="id_tag" onchange="this.form.submit();">
+                {% for tag_item in tag_list %}
+                    {% if tag_item.pk == selected_tag %}
+                        <option selected value="{{tag_item.pk}}">Tag: {{tag_item}}</option>
+                    {% else %}
+                        <option value="{{tag_item.pk}}">Tag: {{tag_item}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+    {% for task in task_list %}
+    <p class="lead">
+        {% if task.status == 'wip' %}
+            [*] {{ task.id }}. <a class="text-white text-decoration-none fw-bold"
+                href="{% url "task_app:edit_status_task" task.id %}">{{task}} [{{task.get_status_display}}]</a>
+        {% elif task.status == 'd' or task.status == 'a' %}
+            [+] {{ task.id }}. <a class="text-decoration-none text-white text-decoration-line-through"
+                href="{% url "task_app:edit_status_task" task.id %}">{{task}}</a> [{{task.get_status_display}}] ({{task.spent_time}})
+        {% endif %}
+    </p>
+    {% endfor %}
+    ---
+    {% for task in task_list_backlog %}
+    <p class="lead">
+        [-] {{ task.id }}. <a class="text-white text-decoration-none"
+            href="{% url "task_app:edit_status_task" task.id %}">{{task}}</a>
+    </p> 
+    {% endfor %}
+
+
+
+
+    {% comment %}
+    <a class="btn btn-lg btn-secondary fw-bold border-white bg-white"
+                href="{% url "task_app:edit_status_task" task.id %}">{{task}} ({{ task.id }})</a>
+    <ul>
+        {% for task in task_list %}
+
+        <li>
+            {% if task.status == 'wip' %}
+                <a href="{% url "task_app:edit_status_task" task.id %}">{{task}}</a>
+            {% else %}
+                <del><a href="{% url "task_app:edit_status_task" task.id %}">{{task}}</a></del>
+            {% endif %} ({{ task.id }})
+        </li>
+
+        {% endfor %}
+    </ul>
+    {% endcomment %}
+{% endblock %}
+
+<!--
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+-->
+
+<!-- <p>TEXTO: {{texto}}</p> -->

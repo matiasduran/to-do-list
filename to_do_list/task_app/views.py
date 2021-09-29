@@ -188,13 +188,28 @@ def send_backlog_task(request, task_id):
 
 @login_required
 def show_all_archived(request):
+    tag_id = request.GET.get('tag')
+
+    if tag_id is None:
+        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+        tag_id = tag.pk
+
+    tag_id = int(tag_id)
+
+    tag_list = Tag.objects.filter(author=request.user)
+
     task_list = Task.objects\
         .filter(author=request.user)\
+        .filter(tag=tag_id)\
         .filter(status='a')\
         .order_by('priority')
-    
-    context = {'task_list': task_list}
-    return render(request, 'task_app/index.html', context)
+
+    context = {
+        'task_list': task_list,
+        'tag_list': tag_list,
+        'selected_tag': tag_id
+    }
+    return render(request, 'task_app/show_all_archived.html', context)
 
 @login_required
 def show_bottom_backlog(request):
