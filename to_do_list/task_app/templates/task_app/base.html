@@ -49,7 +49,7 @@
       <div>
         <h3 class="float-md-start mb-0">Just a TO DO list</h3>
         <nav class="nav nav-masthead justify-content-center float-md-end">
-          <a class="nav-link active" aria-current="page" href="{% url "task_app:index" %}">TO DO</a>
+          <a class="nav-link active" aria-current="page" href="{% url "task_app:index" %}?tag={{selected_tag}}">TO DO</a>
           <a class="nav-link" href="{% url "task_app:show_all_archived" %}?tag={{selected_tag}}">Archived</a>
           <a class="nav-link" href="{% url "task_app:show_bottom_backlog" %}?tag={{selected_tag}}">Backlog</a>
           <a class="nav-link" href="{% url "account:logout" %}">Logout</a>
