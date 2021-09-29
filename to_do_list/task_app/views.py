@@ -143,7 +143,9 @@ def create_task(request):
                 new_task.tag.add(tag_all)
 
             new_task.save()
-            return redirect('task_app:index')
+            response = redirect('task_app:index')
+            response['Location'] += f'?tag={tag_id}'
+            return response # return redirect('task_app:index')
     else:
         task_form = TaskForm()
 
