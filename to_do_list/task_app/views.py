@@ -286,6 +286,7 @@ def download_backup(request):
         #'author',
         #'last_working_time',
         'spent_time',
+        'tag',
     )
 
     # convert model to text with list of dicts
