@@ -161,13 +161,24 @@ def create_task(request):
 
 @login_required
 def archive_all_tasks(request):
+    tag_id = request.GET.get('tag')
+
+    if tag_id is None:
+        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+        tag_id = tag.pk
+
+    tag_id = int(tag_id)
+
     task_list = Task.objects\
         .filter(author=request.user)\
+        .filter(tag=tag_id)\
         .filter(status='d')
     for task in task_list:
         task.status = 'a'
         task.save()
-    return redirect('task_app:index')
+    response = redirect('task_app:show_all_archived')
+    response['Location'] += f'?tag={tag_id}'
+    return response # return redirect('task_app:index')
 
 @login_required
 def delete_archived_tasks(request):
