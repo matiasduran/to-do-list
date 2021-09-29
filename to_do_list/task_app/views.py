@@ -106,7 +106,9 @@ def edit_status_task(request, task_id):
         elif task.status == 'a':
             task.status = 'b'
             task.save()
-            return redirect('task_app:show_all_archived')
+            response = redirect('task_app:show_all_archived')
+            response['Location'] += f'?tag={tag_id}'
+            return response # return redirect('task_app:show_all_archived')
         
         task.save()
         response = redirect('task_app:index')
