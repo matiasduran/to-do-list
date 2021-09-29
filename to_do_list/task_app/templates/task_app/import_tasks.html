@@ -1,0 +1,35 @@
+{% extends "task_app/base.html" %}
+{% block title %}Import tasks{% endblock %}
+{% block content %}
+    
+    {% if success %}
+        <h2>Success!!</h2>
+    {% endif %}
+
+    <form action="{% url "task_app:import_tasks" %}" method="POST" enctype="multipart/form-data"> 
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        
+        <div class="col-md-12">
+            <label for="batch_file" class="form-label"><span class="text-start">Import Tasks</span></label>
+            <input type="file" name="batch_file" id="batch_file" required="True" class="form-control" placeholder="Import a JSON file...">
+        </div>
+
+        <div class="col-md-12">
+            ---
+        </div>
+
+        <div class="col-md-12">
+            <button class="btn btn-outline-secondary" type="submit">Upload File</button>
+        </div>
+
+    </div>
+    </form>
+
+    ---
+
+    <p>
+        <a class="text-white" href="{% url "task_app:download_backup" %}">Export Tasks</a>
+    </p>
+
+{% endblock %}
