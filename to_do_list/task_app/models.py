@@ -14,6 +14,10 @@ class Tag(models.Model):
         blank=True
     )
 
+    class Meta:
+        # sets unique values to pair of fields
+        unique_together = ('author', 'name',)
+
     def __str__(self):
         return self.name
 
