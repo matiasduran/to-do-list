@@ -233,16 +233,12 @@ def delete_archived_tasks(request):
     return response # return redirect('task_app:show_all_archived')
 
 @login_required
-def send_backlog_task(request, task_id):
+def send_backlog_task(request, tag_id, task_id):
     task = get_object_or_404(Task, id=task_id)
     
-    tag_id = request.GET.get('tag')
-
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
-
-    tag_id = int(tag_id)
 
     tag_list = Tag.objects.filter(author=request.user)
 
@@ -256,9 +252,7 @@ def send_backlog_task(request, task_id):
         elif task.status == 'b':
             task.status = 'bb'
         task.save()
-        response = redirect('task_app:show_bottom_backlog')
-        response['Location'] += f'?tag={tag_id}'
-        return response # return redirect('task_app:show_bottom_backlog')
+        return redirect('task_app:show_bottom_backlog', tag_id=tag_id)
     else:
         return HttpResponse('Unauthorized', status=401)
 
