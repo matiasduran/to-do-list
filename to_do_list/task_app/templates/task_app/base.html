@@ -11,8 +11,6 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/cover/">
 
-    
-
     <!-- Bootstrap core CSS -->
     <link href="{% static "task_app/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 
@@ -43,18 +41,42 @@
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
     <header class="mb-auto">
-      <div>
-        <h3 class="float-md-start mb-0">Just a TO DO list</h3>
-        <nav class="nav nav-masthead justify-content-center float-md-end">
-          <a class="nav-link active" aria-current="page" href="{% url "task_app:index" %}?tag={{selected_tag}}">TO DO</a>
-          <a class="nav-link" href="{% url "task_app:show_all_archived" %}?tag={{selected_tag}}">Archived</a>
-          <a class="nav-link" href="{% url "task_app:show_bottom_backlog" %}?tag={{selected_tag}}">Backlog</a>
-          <a class="nav-link" href="{% url "account:logout" %}">Logout</a>
-        </nav>
+      <nav class="navbar navbar-expand-sm navbar-dark " aria-label="Third navbar example">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Just a TO DO list</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample03">
+        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url "task_app:index" %}?tag={{selected_tag}}">TO DO</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "task_app:show_all_archived" %}?tag={{selected_tag}}">Archived</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "task_app:show_bottom_backlog" %}?tag={{selected_tag}}">Backlog</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag}}</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                {% for tag_item in tag_list %}
+                  <li><a class="dropdown-item" href="#{{tag_item.pk}}">{{tag_item}}</a></li>
+                {% endfor %}
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "account:logout" %}">Logout</a>
+          </li>
+        </ul>
       </div>
+    </div>
+  </nav>
     </header>
 
-    <main class="px-3">
+    <main class="px-3">      
       <div id="content">
           {% block content %}{% endblock %}
       </div>
@@ -72,6 +94,6 @@
   </div>
 
 
-      
+    <script src="{% static "task_app/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
   </body>
 </html>
