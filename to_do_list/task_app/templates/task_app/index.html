@@ -23,7 +23,7 @@
 
     {% if task_form %}
 
-    <form action="{% url "task_app:create_task" %}" method="post">
+    <form action="{% url "task_app:create_task" selected_tag %}" method="post">
         <div class="input-group mb-3">
             {{ task_form.description }}
             <div class="mw-10">
@@ -32,7 +32,6 @@
             {% csrf_token %}
             <button class="btn btn-outline-secondary" type="submit" id="description_data">Add Task</button>
         </div>
-        <input type="hidden" name="tag" value="{{selected_tag}}">
     </form>
 
     {% endif %}

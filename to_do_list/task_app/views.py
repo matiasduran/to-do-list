@@ -145,7 +145,7 @@ def edit_status_task(request, tag_id, task_id):
         return HttpResponse('Unauthorized', status=401)
 
 @login_required
-def create_task(request):
+def create_task(request, tag_id):
 
     new_task = None
 
@@ -158,8 +158,6 @@ def create_task(request):
             # Save the task to the database
             new_task.status = 'b'
             new_task.author = request.user
-            
-            tag_id = request.POST.get('tag')
 
             new_task.save()
             tag_all = Tag.objects.get_or_create(name='all', author=request.user)[0]
@@ -170,9 +168,7 @@ def create_task(request):
                 new_task.tag.add(tag_all)
 
             new_task.save()
-            response = redirect('task_app:index')
-            response['Location'] += f'?tag={tag_id}'
-            return response # return redirect('task_app:index')
+            return redirect('task_app:index_tag', tag_id=tag_id)
     else:
         task_form = TaskForm()
 

@@ -6,7 +6,7 @@ app_name = 'task_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('task/create/', views.create_task, name='create_task'),
+    path('tag/<int:tag_id>/task/create/', views.create_task, name='create_task'),
     path('tag/<int:tag_id>/task/<int:task_id>/edit_status/', views.edit_status_task, name='edit_status_task'),
     path('tag/<int:tag_id>/task/<int:task_id>/send_backlog/', views.send_backlog_task, name='send_backlog_task'),
     path('tag/<int:tag_id>/task/archive_all/', views.archive_all_tasks, name='archive_all_tasks'),
