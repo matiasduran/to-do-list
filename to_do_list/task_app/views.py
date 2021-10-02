@@ -116,16 +116,12 @@ def create_task(request):
 
 
 @login_required
-def edit_status_task(request, task_id):
+def edit_status_task(request, tag_id, task_id):
     task = get_object_or_404(Task, id=task_id)
 
-    tag_id = request.GET.get('tag')
-    
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
-
-    tag_id = int(tag_id)
 
     if task.author == request.user:
         if task.status == 'b':
@@ -141,14 +137,10 @@ def edit_status_task(request, task_id):
         elif task.status == 'a':
             task.status = 'b'
             task.save()
-            response = redirect('task_app:show_all_archived')
-            response['Location'] += f'?tag={tag_id}'
-            return response # return redirect('task_app:show_all_archived')
+            return redirect('task_app:show_all_archived', tag_id=tag_id)
         
         task.save()
-        response = redirect('task_app:index')
-        response['Location'] += f'?tag={tag_id}'
-        return response # return redirect('task_app:index')
+        return redirect('task_app:index_tag', tag_id=tag_id)
     else:
         return HttpResponse('Unauthorized', status=401)
 
