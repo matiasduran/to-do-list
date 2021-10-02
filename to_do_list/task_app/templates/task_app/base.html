@@ -62,6 +62,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag}}</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                <li><a class="dropdown-item" href="{% url "task_app:create_tag" selected_tag %}">+ Create Tag...</a></li>
                 {% for tag_item in tag_list %}
                   <li><a class="dropdown-item" href="{% url "task_app:index_tag" tag_item.pk %}">{{tag_item}}</a></li>
                 {% endfor %}

@@ -39,6 +39,19 @@ class StatusTaskForm(forms.ModelForm):
         fields = ('status',)
 
 class TagForm(forms.ModelForm):
+    name = forms.CharField(
+        # this mix business logic with view (templates),
+        # but there is no easy way to avoid it.
+        widget=forms.TextInput(attrs={
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Tag Name...',
+            'aria-label':"Tag name",
+            'aria-describedby':"button-addon2"
+        }),
+        label=u'',
+        required=True
+    )
     class Meta:
         model = Tag
         fields = ('name', )

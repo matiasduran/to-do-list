@@ -338,7 +338,7 @@ def download_backup(request):
     return response
 
 @login_required
-def create_tag(request):
+def create_tag(request, tag_id):
 
     new_tag = None
 
@@ -350,13 +350,14 @@ def create_tag(request):
             # Save the tag to the database
             new_tag.author = request.user
             new_tag.save()
-            return redirect('task_app:index')
+            return redirect('task_app:index_tag', tag_id=new_tag.pk)
     else:
         tag_form = TagForm()
 
     context = {
         'new_tag': new_tag,
-        'tag_form': tag_form
+        'tag_form': tag_form,
+        'selected_tag': tag_id
     }
 
     return render(

@@ -6,11 +6,11 @@
         <h2>Your Tag (Project) has been added.</h2>
     {% else %}
         <form method="post">
-        <div class="input-group mb-3">
-        {{ tag_form }}
-        {% csrf_token %}
-        <button class="btn btn-outline-secondary" type="submit" id="tag_data">Add Tag (Project)</button>
-        </div>
+            <div class="input-group mb-3">
+            {{ tag_form.name }}
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary" type="submit" id="tag_data">Add Tag (Project)</button>
+            </div>
         </form>
     {% endif %}
 
