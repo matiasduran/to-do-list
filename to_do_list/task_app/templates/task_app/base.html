@@ -47,17 +47,29 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarsExample03">
+        {% with request.resolver_match.view_name as view_name %}
         <ul class="navbar-nav me-auto mb-2 mb-sm-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url "task_app:index_tag" selected_tag %}">TO DO</a>
+            {% if view_name == 'task_app:index_tag' %}
+              <a class="nav-link active" aria-current="page" href="{% url "task_app:index_tag" selected_tag %}">TO DO</a>
+            {% else %}
+              <a class="nav-link" aria-current="page" href="{% url "task_app:index_tag" selected_tag %}">TO DO</a>
+            {% endif %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
+            {% if view_name == 'task_app:show_all_archived' %}
+              <a class="nav-link active" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
+            {% else %}
+              <a class="nav-link" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
+            {% endif %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "task_app:show_bottom_backlog" selected_tag %}">Backlog</a>
+            {% if view_name == 'task_app:show_bottom_backlog' %}
+              <a class="nav-link active" href="{% url "task_app:show_bottom_backlog" selected_tag %}">Backlog</a>
+            {% else %}
+              <a class="nav-link" href="{% url "task_app:show_bottom_backlog" selected_tag %}">Backlog</a>
+            {% endif %}
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag}}</a>
@@ -72,6 +84,7 @@
             <a class="nav-link" href="{% url "account:logout" %}">Logout</a>
           </li>
         </ul>
+        {% endwith %}
       </div>
     </div>
   </nav>
