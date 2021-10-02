@@ -44,6 +44,23 @@
   color: #fff;
 }
 
+ul.dropdown-menu {
+  text-shadow: none;
+  background-color: transparent;
+  border-color: #6c757d;
+}
+
+a.dropdown-item {
+color:#6c757d
+}
+
+a.dropdown-item:focus,
+a.dropdown-item:hover {
+background-color: #6c757d;
+border-color: #6c757d;
+color: #fff;
+}
+
 /*
  * Base structure
  */
