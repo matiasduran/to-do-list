@@ -6,7 +6,8 @@
 - [X] Every user has her own task list.
 - [X] Time per task.
 - [X] Import/Export list of tasks.
-- [ ] Project management per user.
+- [X] Project management per user.
+- [ ] Edit Project per user.
 - [ ] Pomodoro timer.
 - [ ] Notes support.
 
