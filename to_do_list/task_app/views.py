@@ -11,40 +11,9 @@ import json
 
 @login_required
 def index(request):
-    tag_id = request.GET.get('tag')
-    
-    if tag_id is None:
-        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
-        tag_id = tag.pk
-
-    tag_id = int(tag_id)
-    
-    # exclude archived tasks
-    task_list = Task.objects\
-        .filter(author=request.user)\
-        .filter(tag=tag_id)\
-        .exclude(status="a")\
-        .exclude(status="b")\
-        .order_by('priority')
-
-    task_list_backlog = Task.objects\
-        .filter(author=request.user)\
-        .filter(tag=tag_id)\
-        .filter(status='b')\
-        .order_by('priority')
-
-    task_form = TaskForm(initial={'priority': '2'})
-
-    tag_list = Tag.objects.filter(author=request.user)
-
-    context = {
-        'task_list': task_list,
-        'task_list_backlog': task_list_backlog,
-        'task_form': task_form,
-        'tag_list': tag_list,
-        'selected_tag': tag_id
-    }
-    return render(request, 'task_app/index.html', context)
+    tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+    tag_id = tag.pk
+    return redirect('task_app:index_tag', tag_id=tag_id)
 
 
 @login_required
