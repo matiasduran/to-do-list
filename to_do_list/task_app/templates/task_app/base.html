@@ -37,9 +37,6 @@
     
     <!-- Custom styles for this template -->
     <link href="{% static "task_app/css/cover.css" %}" rel="stylesheet">
-    <!-- POMODORO
-    <link href="{% static "task_app/css/pomodoro.css"%}" rel="stylesheet">
-    -->
 
   </head>
   <body class="d-flex h-100 text-center text-white bg-dark">
@@ -58,55 +55,6 @@
     </header>
 
     <main class="px-3">
-      <!-- <h1>TO DO</h1> -->
-    <!-- POMODORO
-      <main class="app">
-        <progress id="js-progress" value="0" class="progress btn btn-outline-secondary"></progress>
-          <div class="progress-bar w-75" aria-valuemin="0" aria-valuemax="100"></div>
-        <div class="timer">
-          <div class="button-group mode-buttons" id="js-mode-buttons">
-            <button
-              data-mode="pomodoro"
-              class="btn btn-outline-secondary"
-              id="js-pomodoro"
-            >
-              Pomodoro
-            </button>
-            <button
-              data-mode="shortBreak"
-              class="btn btn-outline-secondary"
-              id="js-short-break"
-            >
-              Short break
-            </button>
-            <button
-              data-mode="longBreak"
-              class="btn btn-outline-secondary"
-              id="js-long-break"
-            >
-              Long break
-            </button>
-          </div>
-          <h1>
-          <div class="clock text-white" id="js-clock">
-            <span id="js-minutes">25</span>
-            <span class="separator">:</span>
-            <span id="js-seconds">00</span>
-          </div>
-          </h1>
-          <button class="btn btn-outline-secondary" data-action="start" id="js-btn">
-            Start
-          </button>
-        </div>
-      </main>
-      <div class="hidden">
-        <audio src="backtowork.mp3" data-sound="pomodoro"></audio>
-        <audio src="break.mp3" data-sound="shortBreak"></audio>
-        <audio src="break.mp3" data-sound="longBreak"></audio>
-      </div>
-      <script src="{% static "task_app/js/pomodoro.js"%}"></script>
-     POMODORO -->
-      
       <div id="content">
           {% block content %}{% endblock %}
       </div>
