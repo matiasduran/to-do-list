@@ -85,7 +85,7 @@
 
     <footer class="mt-auto text-white-50"> 
         <a class="text-white" href="{% url "task_app:archive_all_tasks" selected_tag %}">Archive all tasks</a> |
-        <a class="text-white" href="{% url "task_app:delete_archived_tasks" %}?tag={{selected_tag}}">Delete all archived tasks</a> |
+        <a class="text-white" href="{% url "task_app:delete_archived_tasks" selected_tag %}">Delete all archived tasks</a> |
         <a class="text-white" href="{% url "task_app:download_backup" %}">Download backup of tasks</a>
       <!--
       <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
