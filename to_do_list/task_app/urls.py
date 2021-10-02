@@ -15,6 +15,6 @@ urlpatterns = [
     path('tag/<int:tag_id>/task/delete_archived_tasks/', views.delete_archived_tasks, name='delete_archived_tasks'),
     path('task/download_backup/', views.download_backup, name='download_backup'),
     path('tag/<int:tag_id>/create_tag/', views.create_tag, name='create_tag'),
-    path('task/import_tasks/', views.import_tasks, name='import_tasks'),
+    path('tag/<int:tag_id>/task/import_tasks/', views.import_tasks, name='import_tasks'),
     path('tag/<int:tag_id>/', views.index_tag, name='index_tag'),
 ]

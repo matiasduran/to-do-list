@@ -368,7 +368,7 @@ def create_tag(request, tag_id):
 
 # remove tag
 # edit (or add) tag
-def import_tasks(request):
+def import_tasks(request, tag_id):
     # source code based in: https://pythoncircle.com/post/30/how-to-upload-and-process-the-csv-file-in-django/
 
     if request.method == 'POST':
@@ -403,13 +403,29 @@ def import_tasks(request):
                 new_task.last_working_time = timezone.now()
                 
                 new_task.save()
+
+                # add tag to tasks
+                tag_all = Tag.objects.get_or_create(name='all', author=request.user)[0]
+
+                if 'tag' in task.keys():
+                    for tag_id in task['tag']:
+                        if Tag.objects.filter(pk=tag_id).exists():
+                            tag = (get_object_or_404(Tag, pk=tag_id))
+                            new_task.tag.add(tag, tag_all)
+                        else:
+                            new_task.tag.add(tag_all)
+                else:
+                    new_task.tag.add(tag_all)
+                    
+                new_task.save()
+
             except:
                 return HttpResponse('Internal Server Error', status=500)
 
-        context = {'success': True}
+        context = {'success': True, 'selected_tag': tag_id}
         return render(request, "task_app/import_tasks.html", context)
 
     elif "GET" == request.method:
-        return render(request, "task_app/import_tasks.html")
+        return render(request, "task_app/import_tasks.html", {'selected_tag': tag_id})
 
-    return redirect("task_app:import_tasks")
+    return redirect("task_app:import_tasks", tag_id=tag_id)
