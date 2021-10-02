@@ -54,16 +54,16 @@
             <a class="nav-link active" aria-current="page" href="{% url "task_app:index" %}?tag={{selected_tag}}">TO DO</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "task_app:show_all_archived" %}?tag={{selected_tag}}">Archived</a>
+            <a class="nav-link" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "task_app:show_bottom_backlog" %}?tag={{selected_tag}}">Backlog</a>
+            <a class="nav-link" href="{% url "task_app:show_bottom_backlog" selected_tag %}?tag={{selected_tag}}">Backlog</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag}}</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown03">
                 {% for tag_item in tag_list %}
-                  <li><a class="dropdown-item" href="#{{tag_item.pk}}">{{tag_item}}</a></li>
+                  <li><a class="dropdown-item" href="{% url "task_app:index_tag" tag_item.pk %}">{{tag_item}}</a></li>
                 {% endfor %}
             </ul>
           </li>

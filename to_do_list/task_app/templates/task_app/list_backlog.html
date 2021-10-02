@@ -1,18 +1,5 @@
 {% extends "task_app/base.html" %}
 {% block content %}
-    <form action="{% url "task_app:show_bottom_backlog" %}" method="get">
-        <div class="input-group mb-3">
-            <select name="tag" type="dropdown-menu" class="form-control" aria-label="" value="{{selected_tag}}" id="id_tag" onchange="this.form.submit();">
-                {% for tag_item in tag_list %}
-                    {% if tag_item.pk == selected_tag %}
-                        <option selected value="{{tag_item.pk}}">Tag: {{tag_item}}</option>
-                    {% else %}
-                        <option value="{{tag_item.pk}}">Tag: {{tag_item}}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-    </form>
     {% for task in task_list_backlog %}
     <p class="lead">
         [-] {{ task.id }}. <a class="text-white text-decoration-none"

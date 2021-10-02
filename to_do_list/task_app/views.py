@@ -46,6 +46,41 @@ def index(request):
     }
     return render(request, 'task_app/index.html', context)
 
+
+@login_required
+def index_tag(request, tag_id):
+    
+    if tag_id is None:
+        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+        tag_id = tag.pk
+    
+    # exclude archived tasks
+    task_list = Task.objects\
+        .filter(author=request.user)\
+        .filter(tag=tag_id)\
+        .exclude(status="a")\
+        .exclude(status="b")\
+        .order_by('priority')
+
+    task_list_backlog = Task.objects\
+        .filter(author=request.user)\
+        .filter(tag=tag_id)\
+        .filter(status='b')\
+        .order_by('priority')
+
+    task_form = TaskForm(initial={'priority': '2'})
+
+    tag_list = Tag.objects.filter(author=request.user)
+
+    context = {
+        'task_list': task_list,
+        'task_list_backlog': task_list_backlog,
+        'task_form': task_form,
+        'tag_list': tag_list,
+        'selected_tag': tag_id
+    }
+    return render(request, 'task_app/index.html', context)
+
 """
 @login_required
 def create_task(request):
@@ -236,14 +271,11 @@ def send_backlog_task(request, task_id):
         return HttpResponse('Unauthorized', status=401)
 
 @login_required
-def show_all_archived(request):
-    tag_id = request.GET.get('tag')
+def show_all_archived(request, tag_id):
 
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
-
-    tag_id = int(tag_id)
 
     tag_list = Tag.objects.filter(author=request.user)
 
@@ -261,14 +293,11 @@ def show_all_archived(request):
     return render(request, 'task_app/show_all_archived.html', context)
 
 @login_required
-def show_bottom_backlog(request):
-    tag_id = request.GET.get('tag')
+def show_bottom_backlog(request, tag_id):
 
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
-
-    tag_id = int(tag_id)
 
     tag_list = Tag.objects.filter(author=request.user)
 
