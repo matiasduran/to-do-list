@@ -3,7 +3,7 @@
     {% for task in task_list_backlog %}
     <p class="lead">
         [-] {{ task.id }}. <a class="text-white text-decoration-none"
-            href="{% url "task_app:send_backlog_task" selected_tag task.id %}?tag={{selected_tag}}">{{task}}</a>
+            href="{% url "task_app:send_backlog_task" selected_tag.pk task.id %}">{{task}}</a>
     </p> 
     {% endfor %}
 
@@ -12,7 +12,7 @@
     {% for task in task_list_bottom_backlog %}
     <p class="lead">
         [ ] {{ task.id }}. <a class="text-white text-decoration-none"
-            href="{% url "task_app:send_backlog_task" selected_tag task.id %}?tag={{selected_tag}}">{{task}}</a>
+            href="{% url "task_app:send_backlog_task" selected_tag.pk task.id %}">{{task}}</a>
     </p> 
     {% endfor %}
 

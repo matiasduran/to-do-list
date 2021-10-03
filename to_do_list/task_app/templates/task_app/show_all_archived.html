@@ -4,10 +4,10 @@
     <p class="lead">
         {% if task.status == 'wip' %}
             [*] {{ task.id }}. <a class="text-white text-decoration-none fw-bold"
-                href="{% url "task_app:edit_status_task" selected_tag task.id %}">{{task}} [{{task.get_status_display}}]</a>
+                href="{% url "task_app:edit_status_task" selected_tag.pk task.id %}">{{task}} [{{task.get_status_display}}]</a>
         {% elif task.status == 'd' or task.status == 'a' %}
             [+] {{ task.id }}. <a class="text-decoration-none text-white text-decoration-line-through"
-                href="{% url "task_app:edit_status_task" selected_tag task.id %}">{{task}}</a> [{{task.get_status_display}}] ({{task.spent_time}})
+                href="{% url "task_app:edit_status_task" selected_tag.pk task.id %}">{{task}}</a> [{{task.get_status_display}}] ({{task.spent_time}})
         {% endif %}
     </p>
     {% endfor %}
@@ -15,7 +15,7 @@
     {% for task in task_list_backlog %}
     <p class="lead">
         [-] {{ task.id }}. <a class="text-white text-decoration-none"
-            href="{% url "task_app:edit_status_task" selected_tag task.id %}">{{task}}</a>
+            href="{% url "task_app:edit_status_task" selected_tag.pk task.id %}">{{task}}</a>
     </p> 
     {% endfor %}
 

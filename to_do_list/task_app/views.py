@@ -22,7 +22,9 @@ def index_tag(request, tag_id):
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
-    
+    else:
+        tag = get_object_or_404(Tag, id=tag_id)
+
     # exclude archived tasks
     task_list = Task.objects\
         .filter(author=request.user)\
@@ -46,7 +48,7 @@ def index_tag(request, tag_id):
         'task_list_backlog': task_list_backlog,
         'task_form': task_form,
         'tag_list': tag_list,
-        'selected_tag': tag_id
+        'selected_tag': tag
     }
     return render(request, 'task_app/index.html', context)
 
@@ -141,12 +143,13 @@ def create_task(request, tag_id):
     else:
         task_form = TaskForm()
 
+    tag = get_object_or_404(Tag, id=tag_id)
     context = {
         #'post': post,
         #'comments': comments,
         'new_task': new_task,
         'task_form': task_form,
-        'selected_tag': tag_id
+        'selected_tag': tag
     }
 
     return render(
@@ -218,6 +221,8 @@ def show_all_archived(request, tag_id):
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
+    else:
+        tag = get_object_or_404(Tag, id=tag_id)
 
     tag_list = Tag.objects.filter(author=request.user)
 
@@ -230,7 +235,7 @@ def show_all_archived(request, tag_id):
     context = {
         'task_list': task_list,
         'tag_list': tag_list,
-        'selected_tag': tag_id
+        'selected_tag': tag
     }
     return render(request, 'task_app/show_all_archived.html', context)
 
@@ -240,6 +245,8 @@ def show_bottom_backlog(request, tag_id):
     if tag_id is None:
         tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
         tag_id = tag.pk
+    else:
+        tag = get_object_or_404(Tag, id=tag_id)
 
     tag_list = Tag.objects.filter(author=request.user)
 
@@ -268,7 +275,7 @@ def show_bottom_backlog(request, tag_id):
         'task_list_backlog': task_list_backlog,
         'task_list_bottom_backlog': bottom_backlog_tasks,
         'tag_list': tag_list,
-        'selected_tag': tag_id
+        'selected_tag': tag
     }
     return render(request, 'task_app/list_backlog.html', context)
 
@@ -323,10 +330,11 @@ def create_tag(request, tag_id):
     else:
         tag_form = TagForm()
 
+    tag = get_object_or_404(Tag, id=tag_id)
     context = {
         'new_tag': new_tag,
         'tag_form': tag_form,
-        'selected_tag': tag_id
+        'selected_tag': tag
     }
 
     return render(
@@ -390,11 +398,12 @@ def import_tasks(request, tag_id):
 
             except:
                 return HttpResponse('Internal Server Error', status=500)
-
-        context = {'success': True, 'selected_tag': tag_id}
+        tag = get_object_or_404(Tag, id=tag_id)
+        context = {'success': True, 'selected_tag': tag}
         return render(request, "task_app/import_tasks.html", context)
 
     elif "GET" == request.method:
-        return render(request, "task_app/import_tasks.html", {'selected_tag': tag_id})
+        tag = get_object_or_404(Tag, id=tag_id)
+        return render(request, "task_app/import_tasks.html", {'selected_tag': tag})
 
-    return redirect("task_app:import_tasks", tag_id=tag_id)
+    return redirect("task_app:import_tasks", tag_id=tag_d)

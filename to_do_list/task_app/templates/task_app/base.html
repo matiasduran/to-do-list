@@ -52,29 +52,29 @@
         <ul class="navbar-nav me-auto mb-2 mb-sm-0">
           <li class="nav-item">
             {% if view_name == 'task_app:index_tag' %}
-              <a class="nav-link active" aria-current="page" href="{% url "task_app:index_tag" selected_tag %}">TO DO</a>
+              <a class="nav-link active" aria-current="page" href="{% url "task_app:index_tag" selected_tag.pk %}">TO DO</a>
             {% else %}
-              <a class="nav-link" aria-current="page" href="{% url "task_app:index_tag" selected_tag %}">TO DO</a>
+              <a class="nav-link" aria-current="page" href="{% url "task_app:index_tag" selected_tag.pk %}">TO DO</a>
             {% endif %}
           </li>
           <li class="nav-item">
             {% if view_name == 'task_app:show_all_archived' %}
-              <a class="nav-link active" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
+              <a class="nav-link active" href="{% url "task_app:show_all_archived" selected_tag.pk %}">Archived</a>
             {% else %}
-              <a class="nav-link" href="{% url "task_app:show_all_archived" selected_tag %}">Archived</a>
+              <a class="nav-link" href="{% url "task_app:show_all_archived" selected_tag.pk %}">Archived</a>
             {% endif %}
           </li>
           <li class="nav-item">
             {% if view_name == 'task_app:show_bottom_backlog' %}
-              <a class="nav-link active" href="{% url "task_app:show_bottom_backlog" selected_tag %}">Backlog</a>
+              <a class="nav-link active" href="{% url "task_app:show_bottom_backlog" selected_tag.pk %}">Backlog</a>
             {% else %}
-              <a class="nav-link" href="{% url "task_app:show_bottom_backlog" selected_tag %}">Backlog</a>
+              <a class="nav-link" href="{% url "task_app:show_bottom_backlog" selected_tag.pk %}">Backlog</a>
             {% endif %}
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag}}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Tag: {{selected_tag.name}}</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                <li><a class="dropdown-item" href="{% url "task_app:create_tag" selected_tag %}">+ Create Tag...</a></li>
+                <li><a class="dropdown-item" href="{% url "task_app:create_tag" selected_tag.pk %}">+ Create Tag...</a></li>
                 {% for tag_item in tag_list %}
                   <li><a class="dropdown-item" href="{% url "task_app:index_tag" tag_item.pk %}">{{tag_item}}</a></li>
                 {% endfor %}
@@ -98,9 +98,9 @@
     </main>
 
     <footer class="mt-auto text-white-50"> 
-        <a class="text-white" href="{% url "task_app:archive_all_tasks" selected_tag %}">Archive all tasks</a> |
-        <a class="text-white" href="{% url "task_app:delete_archived_tasks" selected_tag %}">Delete all archived tasks</a> |
-        <a class="text-white" href="{% url "task_app:import_tasks" selected_tag %}">Import / Export tasks</a>
+        <a class="text-white" href="{% url "task_app:archive_all_tasks" selected_tag.pk %}">Archive all tasks</a> |
+        <a class="text-white" href="{% url "task_app:delete_archived_tasks" selected_tag.pk %}">Delete all archived tasks</a> |
+        <a class="text-white" href="{% url "task_app:import_tasks" selected_tag.pk %}">Import / Export tasks</a>
       <!--
       <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
       -->
