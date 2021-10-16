@@ -407,3 +407,23 @@ def import_tasks(request, tag_id):
         return render(request, "task_app/import_tasks.html", {'selected_tag': tag})
 
     return redirect("task_app:import_tasks", tag_id=tag_d)
+
+@login_required
+def block_task(request, tag_id, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if tag_id is None:
+        tag = Tag.objects.get_or_create(name='all', author=request.user)[0]
+        tag_id = tag.pk
+
+    if task.author == request.user:
+        task.status = 'b'
+        if not task.is_blocked:
+            task.is_blocked = True
+        else:
+            task.is_blocked = False
+        
+        task.save()
+        return redirect('task_app:index_tag', tag_id=tag_id)
+    else:
+        return HttpResponse('Unauthorized', status=401)
