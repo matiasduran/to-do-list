@@ -13,9 +13,14 @@
     {% endfor %}
     ---
     {% for task in task_list_backlog %}
-    <p class="lead">
-        [-] {{ task.id }}. <a class="text-white text-decoration-none"
-            href="{% url "task_app:edit_status_task" selected_tag.pk task.id %}">{{task}}</a>
+        {% if task.is_blocked %}
+        <p class="lead text-danger font-weight-bold"><b>[X] </b> <a class="text-danger font-weight-bold text-decoration-none"
+            href="#">{{task}}!!</a>
+        {% else %}
+        <p class="lead">[-] {{ task.id }}. <a class="text-white text-decoration-none"
+            href="{% url "task_app:edit_status_task" selected_tag.pk task.id %}" selected_tag.pk task.id %}">{{task}}</a>
+        {% endif %}
+            <button onclick="document.location='{% url "task_app:block_task" selected_tag.pk task.id %}'" class="btn btn-outline-secondary btn-small">block!</button>
     </p> 
     {% endfor %}
 

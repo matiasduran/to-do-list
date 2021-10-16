@@ -11,6 +11,12 @@
   text-shadow: none; /* Prevent inheritance from `body` */
 }
 
+.btn-small {
+  /* to put on the left of listed tasks */
+  font-size:12px;
+  padding: 2px
+}
+
 .form-control:focus,
 .form-control:hover,
 .page-item:focus,
