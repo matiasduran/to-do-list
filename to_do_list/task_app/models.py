@@ -39,6 +39,7 @@ class Task(models.Model):
     description = models.CharField(max_length=300)
     priority = models.CharField(max_length=1, choices=PRIORITIES)
     status = models.CharField(max_length=3, choices=STATUSES, default='b')
+    is_blocked = models.BooleanField(default=False)
     author = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
